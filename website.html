@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>vee's page</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            font-family: 'Courier New', monospace;
+        }
+        .mewo-gif {
+            cursor: pointer;
+            width: 110px;
+            height: 72px;
+        }
+        .black-circle {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background-color: black;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 2s ease-out, height 2s ease-out;
+            z-index: 1000;
+            pointer-events: none;
+        }
+        .black-circle.expand {
+            width: 300vmax;
+            height: 300vmax;
+        }
+        .crt-text {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 2rem;
+            text-shadow: 0 0 10px white, 0 0 20px white, 0 0 40px white;
+            opacity: 0;
+            transition: opacity 2s ease-in;
+            z-index: 1001;
+            pointer-events: none;
+        }
+        .crt-text.fade-in {
+            opacity: 1;
+        }
+        .scanlines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(0, 255, 0, 0.03) 2px,
+                rgba(0, 255, 0, 0.03) 4px
+            );
+            pointer-events: none;
+            z-index: 1002;
+            opacity: 0;
+            transition: opacity 1s ease-in;
+        }
+        .scanlines.active {
+            opacity: 1;
+        }
+        .crt-flicker {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: black;
+            opacity: 0;
+            pointer-events: none;
+            z-index: 1003;
+            animation: flicker 0.15s infinite linear;
+        }
+        @keyframes flicker {
+            0% { opacity: 0; }
+            98% { opacity: 0; }
+            99% { opacity: 0.02; }
+            100% { opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+    <img src="https://assets.vivwebz.net/mewo-omori.gif" alt="Mewo" class="mewo-gif" id="mewoGif">
+    
+    <div class="black-circle" id="blackCircle"></div>
+    <div class="crt-text" id="crtText">hi</div>
+    <div class="scanlines" id="scanlines"></div>
+    <div class="crt-flicker" id="crtFlicker"></div>
+    
+    <audio id="backgroundMusic" loop preload="auto">
+        <source src="https://assets.vivwebz.net/SpotiDownloader.com_-_pity_party._-_ISSBROKIE.mp3" type="audio/mpeg">
+    </audio>
+    <script>
+        const mewoGif = document.getElementById('mewoGif');
+        const backgroundMusic = document.getElementById('backgroundMusic');
+        const blackCircle = document.getElementById('blackCircle');
+        const crtText = document.getElementById('crtText');
+        const scanlines = document.getElementById('scanlines');
+        const crtFlicker = document.getElementById('crtFlicker');
+        
+        backgroundMusic.volume = 0.1;
+        
+        mewoGif.addEventListener('click', function() {
+            backgroundMusic.play();
+            blackCircle.classList.add('expand');
+            
+            setTimeout(() => {
+                crtText.classList.add('fade-in');
+                scanlines.classList.add('active');
+                crtFlicker.style.display = 'block';
+            }, 1000);
+        });
+    </script>
+</body>
+</html>
